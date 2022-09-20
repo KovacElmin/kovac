@@ -10,5 +10,11 @@ int main(){
             cout << "A" << flush;
             sleep(1);
         }
+    }else{
+        while(true){
+            cout << "B" << flush;
+            sleep(1);
+        }
+        
     }
 }

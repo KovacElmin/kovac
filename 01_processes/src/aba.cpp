@@ -8,12 +8,12 @@ int main(){
     if(pid == 0){
         while(true){
             cout << "A" << flush;
-            sleep(1);
+            sleep(0.5);
         }
     }else{
         while(true){
             cout << "B" << flush;
-            sleep(1);
+            sleep(0.5);
         }
         
     }

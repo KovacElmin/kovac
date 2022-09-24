@@ -26,6 +26,8 @@ int main(){
         des child Prozesses zurück
         */
         kill(pid, SIGKILL);
+        cout << pid << flush;
+        sleep(10);
         quick_exit(EXIT_SUCCESS);
         
     }

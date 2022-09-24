@@ -3,6 +3,7 @@
 #include <chrono>
 #include <thread>
 #include <csignal>
+#include <sys/wait.h>
 
 using namespace std;
 
@@ -26,8 +27,9 @@ int main(){
         des child Prozesses zurück
         */
         kill(pid, SIGKILL);
-        cout << pid << flush;
-        sleep(10);
+        int status;
+        waitpid(pid, &status, 0);
+        cout << "Kindprozess terminiert mit Exit Code "  << status << endl;
         quick_exit(EXIT_SUCCESS);
         
     }

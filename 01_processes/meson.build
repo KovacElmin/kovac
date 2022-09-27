@@ -3,11 +3,14 @@ project('charout', 'cpp',
         version : '0.1',
         default_options : ['cpp_std=c++2a', 'warning_level=3', 'werror=true'])
 
-inc_dir = include_directories(['include'])
+srcAba = ['src/aba.cpp']
 
-src = ['src/charout.cpp']
+executable('aba',
+            sources : srcAba,
+          )
+
+srcCharout = ['src/charout.cpp']
 
 executable('charout',
-            sources : src,
-            include_directories : inc_dir,
+            sources : srcCharout,
           )

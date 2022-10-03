@@ -6,10 +6,8 @@ using namespace std;
 
 int main(int argc, char* argv[]){
     if(argc != 2){
-        cout << "Es muessen genau 2 "
-             << "Kommandozeilenparameter "
-             << "mitgegeben werden"
-             << endl;
+        cout << "There have to be exactly 2 "
+             << "Commandline arguments " << endl;
     }else{
         while(true){
             cout << argv[1] << flush;

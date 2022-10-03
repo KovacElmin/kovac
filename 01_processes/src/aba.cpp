@@ -21,7 +21,7 @@ int main(){
         }
         
         if(errno == -1){
-            cout << "Das Programm charout existiert nicht" << flush;
+            cout << "The program charout doesn't exist" << flush;
             exit(EXIT_FAILURE);
         }
             
@@ -36,21 +36,30 @@ int main(){
                 execl("./charout", "charout", "B", nullptr);
             }
             if(errno == -1){
-                cout << "Das Programm charout existiert nicht" << flush;
+                cout << "The program charout doesn't exist" << flush;
                 exit(EXIT_FAILURE);
             }
             
         }
+        cout << "waiting for 3 seconds" << endl;
         sleep(3);
+
+        cout << endl << "killing both subprocesses with pids " << pid 
+             << " and " << pid1 << endl;
         kill(pid, SIGKILL);
         kill(pid1, SIGKILL);
+        
+        
         int status;
         
+        cout<< "waiting for both subprocesses to be dead" << endl;
         waitpid(pid, &status, 0);
-        cout << "Kindprozess " << pid << " terminiert mit Exit Code "  << WEXITSTATUS(status) << endl;
-        
         waitpid(pid1, &status, 0);
-        cout << "Kindprozess " << pid1 << " terminiert mit Exit Code "  << WEXITSTATUS(status) << endl;
+
+        cout << "subprocess " << pid << " exited with " 
+             << WEXITSTATUS(status) << endl;
+        cout << "subprocess " << pid1 << " exited with " 
+             << WEXITSTATUS(status) << endl;
         
         exit(EXIT_SUCCESS);
     }

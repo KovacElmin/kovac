@@ -26,7 +26,7 @@ int main(){
         }
         
         if(errno == -1){
-            cout << "The program charout doesn't exist" << flush;
+            cerr << "starting charout failed: No such file or directory" << flush;
             exit(EXIT_FAILURE);
         }
             
@@ -51,7 +51,7 @@ int main(){
                 execl("./charout", "charout", "B", nullptr);
             }
             if(errno == -1){
-                cout << "The program charout doesn't exist" << flush;
+                cerr << "starting charout failed: No such file or directory" << flush;
                 exit(EXIT_FAILURE);
             }
             

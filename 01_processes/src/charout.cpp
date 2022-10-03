@@ -5,9 +5,10 @@
 using namespace std;
 
 int main(int argc, char* argv[]){
+    //checking if there are exactly 2 command line arguments
     if(argc != 2){
         cout << "There have to be exactly 2 "
-             << "Commandline arguments " << endl;
+             << "command line arguments " << endl;
     }else{
         while(true){
             cout << argv[1] << flush;

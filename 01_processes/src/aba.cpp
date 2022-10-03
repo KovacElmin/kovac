@@ -9,14 +9,19 @@
 
 using namespace std;
 
-//AM ENDE NOCH KOMMENTARE HINZUFUEGEN
 int main(){
+    //forking for the first time
     auto pid{fork()};
+    
+    //if pid equals 0, then it is a subprocess
     if(pid == 0){   
+        //trying to access environment variables
         const char* aba_letter_a{getenv("ABA_LETTER_A")};
         if(aba_letter_a){
+            //executing the charout program
             execl("./charout", "charout", aba_letter_a, nullptr);
         }else{
+            //executing the charout program
             execl("./charout", "charout", "A", nullptr);
         }
         
@@ -26,13 +31,23 @@ int main(){
         }
             
     }else{
+        /*
+        forking the process again in a code passage that the
+        first subprocess can't access. This is important 
+        because if I wouldn't do it this way there would
+        be more than 2 subprocesses
+        */
         auto pid1{fork()};
 
+        //if pid1 equals 0, then it is a subprocess
         if(pid1 == 0){
+            //trying to access environment variables
             const char* aba_letter_b{getenv("ABA_LETTER_B")};
             if(aba_letter_b){
+                //executing the charout program
                 execl("./charout", "charout", aba_letter_b, nullptr);
             }else{
+                //executing the charout program
                 execl("./charout", "charout", "B", nullptr);
             }
             if(errno == -1){
@@ -46,6 +61,10 @@ int main(){
 
         cout << endl << "killing both subprocesses with pids " << pid 
              << " and " << pid1 << endl;
+        /*
+        the main process gets the real process id of it's children
+        when using the pid variable
+        */
         kill(pid, SIGKILL);
         kill(pid1, SIGKILL);
         
@@ -53,6 +72,7 @@ int main(){
         int status;
         
         cout<< "waiting for both subprocesses to be dead" << endl;
+        //waiting for the subprocesses to be dead in order to avoid zombies
         waitpid(pid, &status, 0);
         waitpid(pid1, &status, 0);
 
@@ -61,18 +81,7 @@ int main(){
         cout << "subprocess " << pid1 << " exited with " 
              << WEXITSTATUS(status) << endl;
         
+        //ending the program
         exit(EXIT_SUCCESS);
     }
-
-        
-  
-        /*
-        Parent Prozess kriegt bei der fork Funktion
-        bei der pid Variable die echte process id
-        des child Prozesses zurück
-        */
-
-       //NUMMER 9 NOCH NICHT .ABA FILE COMMITED
-        
-        
 }

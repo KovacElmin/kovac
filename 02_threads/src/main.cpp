@@ -12,5 +12,6 @@ void drive(){
 }
 
 int main() {
-    return 0;
+    thread drivingRounds{drive};
+    drivingRounds.join();
 }

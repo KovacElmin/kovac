@@ -13,6 +13,23 @@ void drive(string car_name){
     }
 }
 
+
+class Car{
+private:
+    string car_name;
+
+public:
+    Car(string car_name){
+        this->car_name=car_name;
+    }
+
+    void operator()(){
+        drive(this->car_name);
+    }
+
+};
+
+
 int main() {
     thread drivingRounds{drive, "VW Golf"};
     drivingRounds.join();

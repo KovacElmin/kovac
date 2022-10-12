@@ -2,16 +2,18 @@
 #include <thread>
 using namespace std;
 
-void drive(){
+
+
+void drive(string car_name){
     int i = 0;
     while(true){
         i++;
-        cout << i << " VW Golf" << endl;
+        cout << i << " " << car_name << endl;
         this_thread::sleep_for(1s);
     }
 }
 
 int main() {
-    thread drivingRounds{drive};
+    thread drivingRounds{drive, "VW Golf"};
     drivingRounds.join();
 }

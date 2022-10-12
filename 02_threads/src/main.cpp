@@ -32,5 +32,9 @@ public:
 
 int main() {
     thread drivingRounds{drive, "VW Golf"};
+    Car c("VW Caddy");
+    thread drivingRoundsWithClass{c};
+
+    drivingRoundsWithClass.join();
     drivingRounds.join();
 }

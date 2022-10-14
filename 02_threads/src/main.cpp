@@ -10,7 +10,7 @@ void drive(string car_name){
     while(true){
         i++;
         outputString = to_string(i) + " " + car_name;
-        cout << outputString << endl;
+        cout << outputString + "\n" << flush;
         this_thread::sleep_for(1s);
     }
 }

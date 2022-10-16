@@ -63,7 +63,7 @@ int main() {
     double function_car_time{};
     thread drivingRounds{drive, "VW Golf", ref(function_car_time)};
     Car c("VW Caddy");
-    thread drivingRoundsWithClass{c};
+    thread drivingRoundsWithClass{ref(c)};
 
     drivingRoundsWithClass.join();
     drivingRounds.join();

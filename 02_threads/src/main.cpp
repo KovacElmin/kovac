@@ -13,7 +13,7 @@ void drive(string car_name){
     ostringstream outputStream;
     double random_time = 0.00;
     
-    while(true){
+    while(i < 10){
         i++;
         
         random_device rd;

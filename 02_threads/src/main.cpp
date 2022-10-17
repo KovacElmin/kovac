@@ -20,8 +20,10 @@ void drive(string car_name, double& total_time, int rounds){
         mt19937 gen{rd()};
         uniform_real_distribution<> dis{1, 10};
 
+        //determine a random number for the duration of the round
         random_time = dis(gen);
 
+        //adding the current round time to the total time
         total_time += random_time;
 
         outputStream << to_string(i) <<  " " << car_name 
@@ -76,45 +78,59 @@ void error(string msg=""){
 
 int main(int argc, char* argv[]) {
 
+    //Default value for rounds
     int rounds = 10;
 
     if(argc == 2){
         string parameter = argv[1];
         if(parameter == "-h" || parameter == "--help"){
             help();
+            //exit code 0
             exit(EXIT_SUCCESS);
         }else{
             size_t pos;
+
+            //trying to convert string to int
             try{
                 stoi(parameter, &pos);
             }catch(...){
                 error("");
+                //exit code 1
                 exit(EXIT_FAILURE);
             }
             if(pos == parameter.length()){
                 if(stoi(parameter) < 1 || stoi(parameter) > 15){
                     error("Out of range (1 <= LAP'S < 16): " + parameter);
+                    //exit code 1
                     exit(EXIT_FAILURE);
                 }else{
+                    //after validation -> set new value for rounds
                     rounds = stoi(parameter);
                 }
                 
             }else{
                 error("");
+                //exit code 1
                 exit(EXIT_FAILURE);
             }
         }
     }
 
+
     double function_car_time{};
+
+    //starting the thread with the function
     thread drivingRounds{drive, "VW Golf", ref(function_car_time), rounds};
+    
     Car c("VW Caddy");
     c.set_rounds(rounds);
+    //starting the thread with the class
     thread drivingRoundsWithClass{ref(c)};
 
     drivingRoundsWithClass.join();
     drivingRounds.join();
 
+    //determine the winner
     if(c.get_total_time() > function_car_time){
         cout << "Sieger ist: VW Golf mit " << function_car_time << "sek" << endl;
         cout << "Verlierer ist: VW Caddy mit " << c.get_total_time() << "sek" << endl;

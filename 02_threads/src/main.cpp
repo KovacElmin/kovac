@@ -7,13 +7,13 @@ using namespace std;
 
 
 
-void drive(string car_name, double& total_time){
+void drive(string car_name, double& total_time, int rounds){
     int i = 0;
     string outputString = "";
     ostringstream outputStream;
     double random_time = 0.00;
 
-    while(i < 10){
+    while(i < rounds){
         i++;
         
         random_device rd;
@@ -41,6 +41,7 @@ class Car{
 private:
     string car_name;
     double total_time;
+    int rounds;
 
 public:
     Car(string car_name){
@@ -48,21 +49,67 @@ public:
     }
 
     void operator()(){
-        drive(this->car_name, ref(this->total_time));
+        drive(this->car_name, ref(this->total_time), this->rounds);
     }
 
     double get_total_time(){
         return total_time;
     }
 
+    void set_rounds(int rounds){
+        this->rounds = rounds;
+    }
+
 };
 
+void help(){
+    cout << "Usage: contest [-h | --help | LAPS]" << endl;
+}
 
-int main() {
+void error(string msg=""){
+    if(msg == ""){
+        cerr << "Run with --help for more information." << endl;
+    }
+    cerr << msg << endl;
+}
+
+
+int main(int argc, char* argv[]) {
+
+    int rounds = 10;
+
+    if(argc == 2){
+        string parameter = argv[1];
+        if(parameter == "-h" || parameter == "--help"){
+            help();
+            exit(EXIT_SUCCESS);
+        }else{
+            size_t pos;
+            try{
+                stoi(parameter, &pos);
+            }catch(...){
+                error("");
+                exit(EXIT_FAILURE);
+            }
+            if(pos == parameter.length()){
+                if(stoi(parameter) < 1 || stoi(parameter) > 15){
+                    error("Out of range (1 <= LAP'S < 16): " + parameter);
+                    exit(EXIT_FAILURE);
+                }else{
+                    rounds = stoi(parameter);
+                }
+                
+            }else{
+                error("");
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
 
     double function_car_time{};
-    thread drivingRounds{drive, "VW Golf", ref(function_car_time)};
+    thread drivingRounds{drive, "VW Golf", ref(function_car_time), rounds};
     Car c("VW Caddy");
+    c.set_rounds(rounds);
     thread drivingRoundsWithClass{ref(c)};
 
     drivingRoundsWithClass.join();

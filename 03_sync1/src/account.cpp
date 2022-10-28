@@ -6,6 +6,10 @@ private:
     int balance;
 
 public:
+    Account(int balance){
+        this->balance = balance;
+    }
+
     int get_balance(){
         return balance;
     }

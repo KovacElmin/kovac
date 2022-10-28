@@ -7,10 +7,11 @@ private:
     int balance;
 
 public:
+    Account(int balance);
     int get_balance(){};
     void deposit(int amount);
     bool withdraw(int amount);
-    
+
 };
 
 #endif

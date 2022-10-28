@@ -1,6 +1,25 @@
+#include "account.h"
 
-using namespace std;
+class Account{
 
-int main(){
+private:
+    int balance;
 
-}
+public:
+    int get_balance(){
+        return balance;
+    }
+
+    void deposit(int amount){
+        balance += amount;
+    }
+
+    bool withdraw(int amount){
+        if(balance - amount >= 0){
+            balance -= amount;
+            return true;
+        }else{
+            return false;
+        }
+    }
+};

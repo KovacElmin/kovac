@@ -1,29 +1,29 @@
 #include "account.h"
 
-class Account{
+Account::Account(int balance)
+{
+    this->balance = balance;
+}
 
-private:
-    int balance;
+int Account::get_balance()
+{
+    return balance;
+}
 
-public:
-    Account(int balance){
-        this->balance = balance;
+void Account::deposit(int amount)
+{
+    balance += amount;
+}
+
+bool Account::withdraw(int amount)
+{
+    if (balance - amount >= 0)
+    {
+        balance -= amount;
+        return true;
     }
-
-    int get_balance(){
-        return balance;
+    else
+    {
+        return false;
     }
-
-    void deposit(int amount){
-        balance += amount;
-    }
-
-    bool withdraw(int amount){
-        if(balance - amount >= 0){
-            balance -= amount;
-            return true;
-        }else{
-            return false;
-        }
-    }
-};
+}

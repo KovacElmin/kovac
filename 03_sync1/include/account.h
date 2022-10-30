@@ -1,6 +1,7 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 
+
 class Account{
 
 private:
@@ -8,7 +9,7 @@ private:
 
 public:
     Account(int balance);
-    int get_balance(){};
+    int get_balance();
     void deposit(int amount);
     bool withdraw(int amount);
 

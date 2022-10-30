@@ -1,9 +1,12 @@
 #include <iostream>
+#include <thread>
 #include "account.h"
 
 using namespace std;
 
 int main(){
+    /*
+    Punkt 1:
     Account myAccount(20);
 
     cout << "current balance: " 
@@ -26,5 +29,18 @@ int main(){
     cout << " | current Balance: "
     << myAccount.get_balance()
     << endl;
-    
+    */
+   
+    Account myAccount(1);
+    thread t1{[&]() {cout << "trying to withdraw 1 Euro: ";
+                     string result = (myAccount.withdraw(1)) 
+                                     ? "successful" : "not successful";
+                     cout << result << endl;} };    
+    thread t2{[&]() {cout << "trying to withdraw 1 Euro: ";
+                     string result = (myAccount.withdraw(1)) 
+                                     ? "successful" : "not successful";
+                     cout << result << endl;} };
+
+    t1.join();
+    t2.join();
 }

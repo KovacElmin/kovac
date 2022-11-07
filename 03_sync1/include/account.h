@@ -7,7 +7,7 @@ class Account{
 
 private:
     int balance;
-    mutex m;
+    std::mutex m;
 
 public:
     Account(int balance);

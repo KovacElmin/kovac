@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include "account.h"
+#include "CLI11.hpp"
 
 using namespace std;
 
@@ -45,9 +46,9 @@ int main(int argc, char* argv[]){
 
     */
 
-    int deposits = 5;
-    int balance = 0;
 
+    /*
+    Punkt 7:
     if(argc < 2){
         cerr << "balance is required" << endl
              << "Run with --help for more information" << endl;
@@ -181,6 +182,18 @@ int main(int argc, char* argv[]){
             exit(EXIT_FAILURE);
         }
     }
+    */
+
+
+    CLI::App app("Account app");
+
+    int balance{0};
+    app.add_option("balance", balance, "Initial balance")->required();
+    int deposits{5};
+    app.add_option("-d,--deposits", deposits, "Count of deposits")
+    ->capture_default_str();
+    CLI11_PARSE(app, argc, argv);
+
 
     Account myAccount(balance);
     Depositer depo1(ref(myAccount), deposits);

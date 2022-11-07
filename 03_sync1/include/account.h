@@ -20,13 +20,15 @@ public:
 class Depositer{
 private:
     Account& account;
+    int deposits;
 public:
-    Depositer(Account& acc):account(acc){};
+    Depositer(Account& acc, int depos):account(acc), deposits(depos){};
     void operator()(){
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < deposits; i++){
             account.deposit(1);
         }
     };
+    
 
 };
 

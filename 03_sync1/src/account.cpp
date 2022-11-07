@@ -15,12 +15,14 @@ int Account::get_balance()
 
 void Account::deposit(int amount)
 {
+    //unique lock for critical area
     unique_lock<mutex> unique(m);
     balance += amount;
 }
 
 bool Account::withdraw(int amount)
 {
+    //lock guard for critical area
     lock_guard<mutex> guard{m};   
     if (balance - amount >= 0)
     {

@@ -7,6 +7,7 @@ class Account{
 
 private:
     int balance;
+    //mutex for synchronisation
     std::mutex m;
 
 public:

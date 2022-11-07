@@ -185,6 +185,7 @@ int main(int argc, char* argv[]){
     */
 
 
+   //Validation of the Command Line Arguments via CLI
     CLI::App app("Account app");
 
     int balance{0};
@@ -194,11 +195,12 @@ int main(int argc, char* argv[]){
     ->capture_default_str();
     CLI11_PARSE(app, argc, argv);
 
-
+    //creating the instances of the account and the two depositors
     Account myAccount(balance);
     Depositer depo1(ref(myAccount), deposits);
     Depositer depo2(ref(myAccount), deposits);
 
+    //starting the two threads with the class
     thread t1{depo1};
     thread t2{depo2};
 

@@ -30,7 +30,9 @@ int main(){
     << myAccount.get_balance()
     << endl;
     */
-   
+
+    /*    
+    Punkt 5:
     Account myAccount(1);
     thread t1{[&]() {cout << "trying to withdraw 1 Euro: ";
                      string result = (myAccount.withdraw(1)) 
@@ -41,6 +43,16 @@ int main(){
                                      ? "successful" : "not successful";
                      cout << result << endl;} };
 
+    */
+    Account myAccount(0);
+    Depositer depo1(ref(myAccount));
+    Depositer depo2(ref(myAccount));
+
+    thread t1{depo1};
+    thread t2{depo2};
+
     t1.join();
     t2.join();
+
+    cout << myAccount.get_balance();
 }

@@ -15,7 +15,9 @@ int Account::get_balance()
 
 void Account::deposit(int amount)
 {
-    balance += amount;
+    int tmp{balance};
+    std::this_thread::sleep_for(10ms);
+    balance = tmp + amount;
 }
 
 bool Account::withdraw(int amount)

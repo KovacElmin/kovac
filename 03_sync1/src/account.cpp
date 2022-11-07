@@ -20,7 +20,7 @@ void Account::deposit(int amount)
 
 bool Account::withdraw(int amount)
 {
-    
+    lock_guard<mutex> guard{m};   
     if (balance - amount >= 0)
     {
         this_thread::yield();

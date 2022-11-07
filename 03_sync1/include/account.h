@@ -17,4 +17,17 @@ public:
 
 };
 
+class Depositer{
+private:
+    Account& account;
+public:
+    Depositer(Account& acc):account(acc){};
+    void operator()(){
+        for(int i = 0; i < 5; i++){
+            account.deposit(1);
+        }
+    };
+
+};
+
 #endif

@@ -1,9 +1,9 @@
 #pragma once
 
-class Work_Packet{
+class WorkPacket{
 private:
     int id;
 public:
-    Work_Packet(int id):id(id){};
+    WorkPacket(int id):id(id){};
     const int getId(){return id;};
 };

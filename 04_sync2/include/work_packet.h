@@ -5,5 +5,5 @@ private:
     int id;
 public:
     WorkPacket(int id):id(id){};
-    const int getId(){return id;};
+    int getId() const{ return id; };
 };

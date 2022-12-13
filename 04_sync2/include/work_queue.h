@@ -6,6 +6,7 @@
 
 class WorkQueue{
 private:
+    //mutex and condition variable for synchronisation
     std::mutex myMutex;
     std::queue<WorkPacket> myQueue;
     std::condition_variable not_empty;

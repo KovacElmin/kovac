@@ -11,6 +11,7 @@ using namespace std;
 void worker(int id, WorkQueue& q){
     while(true){
         cout << "W" << id << ": Want work packet" << endl;
+        //processing work packets
         WorkPacket wp = q.pop();
         cout << "W" << id << ": Got work packet " << wp.getId() << endl;
         
@@ -30,6 +31,7 @@ void worker(int id, WorkQueue& q){
 }
 
 int main(int argc, char* argv[]){
+    //size of the queue
     int size;
 
     if(argc == 2){
@@ -41,6 +43,7 @@ int main(int argc, char* argv[]){
                  << "   size UINT REQUIRED      Size of the queue" << endl << endl
                  << "Options:" << endl
                  << "   -h, --help              Print this help message and exit" << endl;
+            //exit code 0
             exit(EXIT_SUCCESS);
         }else {
             size_t pos; 
@@ -71,17 +74,20 @@ int main(int argc, char* argv[]){
     }else{
         cerr << "size is required" << endl
              << "Run with --help for more information." << endl;
+        //exit code 1
         exit(EXIT_FAILURE);
     }
 
     WorkQueue wq(size);
     int i = 0;
     
+    //starting worker threads
     thread worker1{worker, 1, ref(wq)};
     thread worker2{worker, 2, ref(wq)};
     thread worker3{worker, 3, ref(wq)};
 
 
+    //boss thread
     while(i < size){
         random_device rd;
         mt19937 gen{rd()};
@@ -95,6 +101,7 @@ int main(int argc, char* argv[]){
         chrono::milliseconds sleeptime(millisecondsToSleep);
         this_thread::sleep_for(sleeptime);
 
+        //submitting packages to queue
         WorkPacket wp(i);
         wq.push(wp);
         cout << "B: Submitted work packet " << i <<  "(" << setprecision(2) << random_time << "s)" << endl;

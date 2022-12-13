@@ -29,8 +29,51 @@ void worker(int id, WorkQueue& q){
 
 }
 
-int main(){
-    int size = 10;
+int main(int argc, char* argv[]){
+    int size;
+
+    if(argc == 2){
+        string parameter = argv[1];
+        if(parameter == "-h" || parameter == "--help"){
+            cout << "Boss and worker simulation" << endl
+                 << "Usage: loadsim [OPTIONS] size" << endl << endl
+                 << "Positionals: " << endl
+                 << "   size UINT REQUIRED      Size of the queue" << endl << endl
+                 << "Options:" << endl
+                 << "   -h, --help              Print this help message and exit" << endl;
+            exit(EXIT_SUCCESS);
+        }else {
+            size_t pos; 
+            //trying to convert string to int
+            try{
+                stoi(parameter, &pos);
+            }catch(...){
+                cerr << "Could not convert: size = " + parameter << endl
+                     << "Run with --help for more information" << endl;
+                //exit code 1
+                exit(EXIT_FAILURE);
+            }
+            if(pos == parameter.length()){
+                size = stoi(parameter);
+                if(size <= 0){
+                    cerr << "Could not convert: size = " + parameter << endl
+                         << "Run with --help for more information" << endl;
+                    //exit code 1
+                    exit(EXIT_FAILURE);
+                }
+            }else{
+                cerr << "Could not convert: balance = " + parameter << endl
+                     << "Run with --help for more information" << endl;
+                //exit code 1
+                exit(EXIT_FAILURE);
+            }
+        }
+    }else{
+        cerr << "size is required" << endl
+             << "Run with --help for more information." << endl;
+        exit(EXIT_FAILURE);
+    }
+
     WorkQueue wq(size);
     int i = 0;
     

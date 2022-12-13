@@ -3,14 +3,12 @@
 
 using namespace std;
 
-WorkQueue::WorkQueue(){
-
-}
-
 void WorkQueue::push(WorkPacket wp){
-    unique_lock<mutex> guard{myMutex};
-    myQueue.push(wp);
-    not_empty.notify_one();
+    if(myQueue.size() < size){
+        unique_lock<mutex> guard{myMutex};
+        myQueue.push(wp);
+        not_empty.notify_one();
+    }
 }
 
 WorkPacket WorkQueue::pop(){
@@ -19,4 +17,5 @@ WorkPacket WorkQueue::pop(){
     WorkPacket poppedItem = myQueue.front();
     myQueue.pop();
     return poppedItem;
+    
 }

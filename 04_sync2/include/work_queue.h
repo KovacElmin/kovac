@@ -9,8 +9,9 @@ private:
     std::mutex myMutex;
     std::queue<WorkPacket> myQueue;
     std::condition_variable not_empty;
+    size_t size;
 public:
-    WorkQueue();
+    WorkQueue(size_t size):size(size){};
     void push(WorkPacket wp);
     WorkPacket pop();
 };

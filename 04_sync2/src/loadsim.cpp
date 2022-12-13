@@ -30,7 +30,8 @@ void worker(int id, WorkQueue& q){
 }
 
 int main(){
-    WorkQueue wq;
+    int size = 10;
+    WorkQueue wq(size);
     int i = 0;
     
     thread worker1{worker, 1, ref(wq)};
@@ -38,7 +39,7 @@ int main(){
     thread worker3{worker, 3, ref(wq)};
 
 
-    while(true){
+    while(i < size){
         random_device rd;
         mt19937 gen{rd()};
         uniform_real_distribution<double> dis{0, 1};

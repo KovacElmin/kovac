@@ -6,28 +6,35 @@ using namespace std;
 
 void Philosopher::operator()(){
     while(true){
-        cout << "Philosopher " << id << " is thinking" << endl;
-    
+        println({"Philosopher ", to_string(id), " is thinking"});
         chrono::milliseconds sleeptime(1000);
         this_thread::sleep_for(sleeptime);
 
-        cout << "Philosopher " << id << " attempts to get left fork" << endl;
-
+        println({"Philosopher ", to_string(id) , " attempts to get left fork"});
+        
         leftFork.lock();
-        cout << "Philosopher " << id << " got the left fork. Now he wants the right one..." << endl;
-
+        println({"Philosopher " , to_string(id) , " got the left fork. Now he wants the right one..."});
+        
         rightFork.lock();
-        cout << "Philosopher " << id << " got the right fork. Now he is eating..." << endl;
-
+        println({"Philosopher ", to_string(id) , " got the right fork. Now he is eating..."});
+        
         chrono::milliseconds sleeptime1(2000);
         this_thread::sleep_for(sleeptime1);
-        cout << "Philosopher " << id << " finished eating" << endl;
+        println({"Philosopher ", to_string(id) , " finished eating"});
         
         leftFork.unlock();
-        cout << "Philosopher " << id << " released left fork" << endl;
+        println({"Philosopher ", to_string(id) , " released left fork"});
 
         rightFork.unlock();
-        cout << "Philosopher " << id << " released right fork" << endl;
+        println({"Philosopher ", to_string(id) , " released right fork"});
     }
     
+}
+
+void Philosopher::println(const vector<string>& v){
+   lock_guard<mutex> lg{globalMutex};
+   for(string item : v){
+    cout << item;
+   }
+   cout << endl;
 }

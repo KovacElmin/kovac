@@ -8,10 +8,11 @@ private:
     int id;
     std::mutex& leftFork;
     std::mutex& rightFork;
-    std::mutex globalMutex;
+    std::recursive_mutex out_mtx;
 public: 
     Philosopher(int id, std::mutex& leftFork, std::mutex& rightFork) 
     : id(id), leftFork(leftFork), rightFork(rightFork){};
     void operator()();
-    void println(const std::initializer_list<std::string>& list);
+    void println();
+    template<typename T, typename... Rest> void println(const T& word, const Rest&... rest);
 };

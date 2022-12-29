@@ -13,5 +13,5 @@ public:
     Philosopher(int id, std::mutex& leftFork, std::mutex& rightFork) 
     : id(id), leftFork(leftFork), rightFork(rightFork){};
     void operator()();
-    void println(const std::vector<std::string>& v);
+    void println(const std::initializer_list<std::string>& list);
 };

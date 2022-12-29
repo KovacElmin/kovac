@@ -31,9 +31,9 @@ void Philosopher::operator()(){
     
 }
 
-void Philosopher::println(const vector<string>& v){
+void Philosopher::println(const initializer_list<string>& list){
    lock_guard<mutex> lg{globalMutex};
-   for(string item : v){
+   for(string item : list){
     cout << item;
    }
    cout << endl;

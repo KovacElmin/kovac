@@ -1,4 +1,5 @@
 #include "philosopher.h"
+#include "semaphor.h"
 #include <iostream>
 #include <thread>
 
@@ -11,11 +12,13 @@ int main(){
     mutex fourthFork;
     mutex fifthFork;
 
-    Philosopher p1(1, firstFork, secondFork);
-    Philosopher p2(2, secondFork, thirdFork);
-    Philosopher p3(3, thirdFork, fourthFork);
-    Philosopher p4(4, fourthFork, fifthFork);
-    Philosopher p5(5, fifthFork, firstFork);
+    Semaphor sp(4);
+
+    Philosopher p1(1, firstFork, secondFork, &sp);
+    Philosopher p2(2, secondFork, thirdFork, &sp);
+    Philosopher p3(3, thirdFork, fourthFork, &sp);
+    Philosopher p4(4, fourthFork, fifthFork, &sp);
+    Philosopher p5(5, fifthFork, firstFork, &sp);
 
     thread philosopher1(ref(p1));
     thread philosopher2(ref(p2));

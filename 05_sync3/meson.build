@@ -7,7 +7,7 @@ thread_dep = dependency('threads')
 
 inc_dir = include_directories(['include'])
 
-src = ['src/dining.cpp', 'src/Philosopher.cpp']
+src = ['src/dining.cpp', 'src/philosopher.cpp']
 
 executable('dining',
             sources : src,

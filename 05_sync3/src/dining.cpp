@@ -1,4 +1,4 @@
-#include "Philosopher.h"
+#include "philosopher.h"
 #include <iostream>
 #include <thread>
 

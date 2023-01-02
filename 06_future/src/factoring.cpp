@@ -8,6 +8,7 @@ using namespace std;
 
 int main(int argc, char* argv[]){
     vector<string> arguments;
+    bool asynchron;
 
     CLI::App app("Factor numbers");
     app.add_option("number", arguments, "numbers to factor")
@@ -17,12 +18,23 @@ int main(int argc, char* argv[]){
         }
         return string();
     });
+    app.add_flag("-a,--async", asynchron, "async");
     CLI11_PARSE(app, argc, argv);
 
     vector<InfInt> vec;
     for(string arg : arguments){
         vec.push_back(arg);
-        cout << arg << endl;
+    }
+
+    vector<InfInt> results;
+    for(InfInt elem : vec){
+        results = get_factors(elem);
+        cout <<  elem << ": ";
+        for(InfInt resItem : results){
+            cout << resItem << " ";
+        }
+        cout << endl;
+        results.clear();
     }
 
     

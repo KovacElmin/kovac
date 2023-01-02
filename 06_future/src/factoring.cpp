@@ -1,10 +1,17 @@
 #include <iostream>
+#include <future>
 #include "InfInt.h"
 #include "CLI11.hpp"
 #include "calc_factors.h"
 
 using namespace std;
 
+vector<vector<InfInt>> getAllPrimes(vector<vector<InfInt>> results, vector<InfInt> vec){
+    for(InfInt elem : vec){
+        results.push_back(get_factors(elem));
+    }
+    return results;
+}
 
 int main(int argc, char* argv[]){
     vector<string> arguments;
@@ -26,17 +33,19 @@ int main(int argc, char* argv[]){
         vec.push_back(arg);
     }
 
-    vector<InfInt> results;
-    for(InfInt elem : vec){
-        results = get_factors(elem);
-        cout <<  elem << ": ";
-        for(InfInt resItem : results){
-            cout << resItem << " ";
-        }
-        cout << endl;
-        results.clear();
-    }
-
+    vector<vector<InfInt>> results;
+    future<vector<vector<InfInt>>> futureResults = async(launch::async, getAllPrimes, results, vec);
     
+    while(futureResults.wait_for(chrono::seconds(1)) == future_status::ready){
+        results = futureResults.get();
+        cout << results.size() << endl;
+        for(long unsigned int i = 0; i < results.size(); i++){
+            cout << vec[i] << ": ";
+            for(long unsigned int j = 0; j < results[i].size(); j++){
+                cout << results[i][j] << " ";
+            }
+            cout << endl;
+        }
+    } 
     
 }

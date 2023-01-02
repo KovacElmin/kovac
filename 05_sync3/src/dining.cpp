@@ -6,11 +6,7 @@
 
 using namespace std;
 
-/*
 
-NOCH NICHT 8 UND 9 COMMITED + CLI IST NOCH IN INCLUDE DATEI
-
-*/
 int main(int argc, char* argv[]){
     //Processing command line arguments with CLI
     CLI::App app("Dining philosophers simulation");
@@ -31,12 +27,14 @@ int main(int argc, char* argv[]){
     if(noDeadLock){
         Semaphor sp(4);
 
+        //creating the philosophers
         Philosopher p1(1, firstFork, secondFork, &sp, liveLock);
         Philosopher p2(2, secondFork, thirdFork, &sp, liveLock);
         Philosopher p3(3, thirdFork, fourthFork, &sp, liveLock);
         Philosopher p4(4, fourthFork, fifthFork, &sp, liveLock);
         Philosopher p5(5, fifthFork, firstFork, &sp, liveLock);
 
+        //starting the philosopher threads
         thread philosopher1(ref(p1));
         thread philosopher2(ref(p2));
         thread philosopher3(ref(p3));
@@ -49,13 +47,14 @@ int main(int argc, char* argv[]){
         philosopher4.join();
         philosopher5.join();
     }else{
-        
+        //creating the philosophers
         Philosopher p1(1, firstFork, secondFork, nullptr, liveLock);
         Philosopher p2(2, secondFork, thirdFork, nullptr, liveLock);
         Philosopher p3(3, thirdFork, fourthFork, nullptr, liveLock);
         Philosopher p4(4, fourthFork, fifthFork, nullptr, liveLock);
         Philosopher p5(5, fifthFork, firstFork, nullptr, liveLock);
 
+        //starting the philosopher threads
         thread philosopher1(ref(p1));
         thread philosopher2(ref(p2));
         thread philosopher3(ref(p3));

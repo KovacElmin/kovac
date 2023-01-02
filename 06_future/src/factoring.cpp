@@ -13,6 +13,16 @@ vector<vector<InfInt>> getAllPrimes(vector<vector<InfInt>> results, vector<InfIn
     return results;
 }
 
+void print(vector<InfInt>& vec, vector<vector<InfInt>>& results){
+    for(long unsigned int i = 0; i < results.size(); i++){
+            cout << vec[i] << ": ";
+            for(long unsigned int j = 0; j < results[i].size(); j++){
+                cout << results[i][j] << " ";
+            }
+            cout << endl;
+        }
+}
+
 int main(int argc, char* argv[]){
     vector<string> arguments;
     bool asynchron;
@@ -36,16 +46,12 @@ int main(int argc, char* argv[]){
     vector<vector<InfInt>> results;
     future<vector<vector<InfInt>>> futureResults = async(launch::async, getAllPrimes, results, vec);
     
-    while(futureResults.wait_for(chrono::seconds(1)) == future_status::ready){
-        results = futureResults.get();
-        cout << results.size() << endl;
-        for(long unsigned int i = 0; i < results.size(); i++){
-            cout << vec[i] << ": ";
-            for(long unsigned int j = 0; j < results[i].size(); j++){
-                cout << results[i][j] << " ";
-            }
-            cout << endl;
-        }
+    while(futureResults.wait_for(chrono::seconds(1)) != future_status::ready){
+        cout << "not ready" << endl;
     } 
+    results = futureResults.get();
+    thread t{print, ref(vec), ref(results)};
+    t.join();
     
+
 }

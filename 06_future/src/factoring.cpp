@@ -42,6 +42,7 @@ int main(int argc, char* argv[]){
     bool asynchron;
 
     CLI::App app("Factor numbers");
+    //validating command line arguments
     app.add_option("number", arguments, "numbers to factor")
     ->required()->check([&](const string& str){
         if (str.find_first_not_of("1234567890") != string::npos){
@@ -52,6 +53,7 @@ int main(int argc, char* argv[]){
     app.add_flag("-a,--async", asynchron, "async");
     CLI11_PARSE(app, argc, argv);
 
+    //converting string to InfInt
     vector<InfInt> vec;
     for(string arg : arguments){
         vec.push_back(arg);
@@ -61,13 +63,13 @@ int main(int argc, char* argv[]){
     shared_future<vector<vector<InfInt>>> futureResults;
     auto start = chrono::system_clock::now();
     if(asynchron){
+        //launching as sepperate thread
         futureResults = async(launch::async, getAllPrimes, results, vec);
     }else{
+        //not launching as sepperate thread
         futureResults = async(launch::deferred, getAllPrimes, results, vec);
     }
     
-    //async anderer thread
-    //deferred gleicher th
     while(futureResults.wait_for(chrono::seconds(3)) != future_status::ready){
         cout << "not ready" << endl;
     } 
@@ -79,5 +81,6 @@ int main(int argc, char* argv[]){
     
     auto duration = chrono::duration_cast<chrono::milliseconds>
         (chrono::system_clock::now() - start);
+    //time elapsed
     cout << "Time elapsed used for factoring: " << duration.count() << "ms" << endl;
 }

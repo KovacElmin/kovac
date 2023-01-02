@@ -1,5 +1,6 @@
 #include <iostream>
 #include <future>
+#include <chrono>
 #include "InfInt.h"
 #include "CLI11.hpp"
 #include "calc_factors.h"
@@ -13,7 +14,7 @@ vector<vector<InfInt>> getAllPrimes(vector<vector<InfInt>> results, vector<InfIn
     return results;
 }
 
-void print(vector<InfInt>& vec, vector<vector<InfInt>>& results){
+void print(vector<InfInt> vec, vector<vector<InfInt>> results){
     for(long unsigned int i = 0; i < results.size(); i++){
             cout << vec[i] << ": ";
             for(long unsigned int j = 0; j < results[i].size(); j++){
@@ -21,6 +22,19 @@ void print(vector<InfInt>& vec, vector<vector<InfInt>>& results){
             }
             cout << endl;
         }
+}
+
+void checkPrimeFactors(vector<InfInt> vec, vector<vector<InfInt>> results){
+    InfInt res = 1;
+    for(long unsigned int i = 0; i < results.size(); i++){
+        for(long unsigned int j = 0; j < results[i].size(); j++){
+            res *= results[i][j];
+        }
+        if(res != vec[i]){
+            cerr << "Prime factors are not correct" << endl;
+        }
+        res = 1;
+    }
 }
 
 int main(int argc, char* argv[]){
@@ -44,14 +58,26 @@ int main(int argc, char* argv[]){
     }
 
     vector<vector<InfInt>> results;
-    future<vector<vector<InfInt>>> futureResults = async(launch::async, getAllPrimes, results, vec);
+    shared_future<vector<vector<InfInt>>> futureResults;
+    auto start = chrono::system_clock::now();
+    if(asynchron){
+        futureResults = async(launch::async, getAllPrimes, results, vec);
+    }else{
+        futureResults = async(launch::deferred, getAllPrimes, results, vec);
+    }
     
-    while(futureResults.wait_for(chrono::seconds(1)) != future_status::ready){
+    //async anderer thread
+    //deferred gleicher th
+    while(futureResults.wait_for(chrono::seconds(3)) != future_status::ready){
         cout << "not ready" << endl;
     } 
     results = futureResults.get();
-    thread t{print, ref(vec), ref(results)};
+    thread t{print, vec, results};
+    thread t1{checkPrimeFactors, vec, results};
     t.join();
+    t1.join();
     
-
+    auto duration = chrono::duration_cast<chrono::milliseconds>
+        (chrono::system_clock::now() - start);
+    cout << "Time elapsed used for factoring: " << duration.count() << "ms" << endl;
 }

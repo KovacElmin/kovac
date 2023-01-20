@@ -4,6 +4,7 @@
 #include <iostream>
 #include <thread>
 
+
 using namespace std;
 
 void Clock::operator()(){
@@ -11,9 +12,12 @@ void Clock::operator()(){
     while (true)
     {
         this_thread::sleep_for(std::chrono::milliseconds(1000));
+        
+
         chrono::system_clock systemClock;
         chrono::time_point<chrono::system_clock> currTime = systemClock.now();
-        chrono::time_point<chrono::system_clock> editedTime = set_time(currTime, hours_, minutes_, seconds_);
+        chrono::time_point<chrono::system_clock> editedTime = TIME_UTILS_H::set_time(currTime, hours_, minutes_, seconds_);
+
         editedTime += chrono::seconds(passedSeconds);
         cout << name_ << ": " << editedTime << endl;
         passedSeconds++;
@@ -23,3 +27,15 @@ void Clock::operator()(){
 
 
 }
+
+void Clock::set_time(int hours_, int minutes_, int seconds_){
+    this->hours_ = hours_;
+    this->minutes_ = minutes_;
+    this->seconds_ = seconds_;
+}
+
+tuple<int,int,int> Clock::get_time(){
+    tuple<int,int,int> time{hours_, minutes_, seconds_};
+    return time;
+}
+

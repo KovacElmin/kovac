@@ -4,6 +4,6 @@
 
 using namespace std;
 int main(){
-    thread clock{Clock("testclock")};
+    thread clock{Clock("testclock", 15, 45, 0)};
     clock.join();
 }

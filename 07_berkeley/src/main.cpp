@@ -10,6 +10,7 @@ class TimeSlave{
 private:
     string name_;
     int hours_, minutes_, seconds_;
+    Channel channel;
 public:
     TimeSlave(string name_, int hours_, int minutes_, int seconds_)
     : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_){}
@@ -17,6 +18,10 @@ public:
     void operator()(){
         thread clock(Clock(name_, hours_, minutes_, seconds_));
         clock.join();
+    }
+
+    Channel* get_channel(){
+        return &channel;
     }
 };
 

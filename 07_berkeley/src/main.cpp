@@ -19,10 +19,27 @@ public:
     }
 };
 
+class TimeMaster{
+private:
+    string name_;
+    int hours_, minutes_, seconds_;
+public:
+    TimeMaster(string name_, int hours_, int minutes_, int seconds_)
+    : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_){}
+    
+    void operator()(){
+        thread clock(Clock(name_, hours_, minutes_, seconds_));
+        clock.join();
+    }
+};
+
 int main(){
+    thread master{TimeMaster("master", 21, 0, 0)};
+
     thread slave1{TimeSlave("slave1", 15, 45, 0)};
     thread slave2{TimeSlave("slave2", 20, 25, 0)};
 
+    master.join();
     slave1.join();
     slave2.join();
     

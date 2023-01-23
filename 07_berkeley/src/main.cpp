@@ -1,4 +1,5 @@
 #include "clock.h"
+#include "pipe.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -30,6 +31,20 @@ public:
     void operator()(){
         thread clock(Clock(name_, hours_, minutes_, seconds_));
         clock.join();
+    }
+};
+
+class Channel{
+private:
+    Pipe<long> pipe1;
+    Pipe<long> pipe2;
+public:
+    Pipe<long>& get_pipe1(){
+        return pipe1;
+    }
+
+    Pipe<long>& get_pipe2(){
+        return pipe2;
     }
 };
 

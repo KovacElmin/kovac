@@ -33,12 +33,13 @@ private:
     string name_;
     int hours_, minutes_, seconds_;
     Channel* channel;
+    int deviation;
 public:
-    TimeSlave(string name_, int hours_, int minutes_, int seconds_)
-    : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_){}
+    TimeSlave(string name_, int hours_, int minutes_, int seconds_, int deviation)
+    : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_), deviation(deviation){}
     
     void operator()(){
-        Clock clock(name_, hours_, minutes_, seconds_);
+        Clock clock(name_, hours_, minutes_, seconds_, deviation);
         thread clock_thread(clock);
         long time = clock.to_time();
         long value;
@@ -66,12 +67,13 @@ private:
     int hours_, minutes_, seconds_;
     Channel* channel1;
     Channel* channel2;
+    int deviation;
 public:
-    TimeMaster(string name_, int hours_, int minutes_, int seconds_)
-    : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_){}
+    TimeMaster(string name_, int hours_, int minutes_, int seconds_, int deviation)
+    : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_), deviation(deviation){}
     
     void operator()(){
-        Clock clock(name_, hours_, minutes_, seconds_);
+        Clock clock(name_, hours_, minutes_, seconds_, deviation);
         thread clock_thread(clock);
 
         while(true){
@@ -84,11 +86,11 @@ public:
             channel1->get_pipe2() >> s1_time;
             long s2_time;
             channel2->get_pipe2() >> s2_time;
-            long s1_difference = s1_time - time;
-            long s2_difference = s2_time - time;
-            long average_difference = (s1_difference + s2_difference) / 2;
-            channel1->get_pipe1() << average_difference - s1_difference;
-            channel2->get_pipe1() << average_difference - s2_difference;
+            long s1_deviation = s1_time - time;
+            long s2_deviation = s2_time - time;
+            long average_difference = (s1_deviation + s2_deviation) / 2;
+            channel1->get_pipe1() << average_difference - s1_deviation;
+            channel2->get_pipe1() << average_difference - s2_deviation;
 
             clock.from_time(time + average_difference);
 
@@ -115,14 +117,14 @@ int main(){
     ch1.set_latency(100);
     ch2.set_latency(200);
 
-    TimeMaster master("master", 21, 0, 0);
+    TimeMaster master("master", 21, 0, 0, 200);
     master.set_channel1(&ch1);
     master.set_channel2(&ch2);
 
-    TimeSlave slave1("slave1", 15, 45, 0);
+    TimeSlave slave1("slave1", 15, 45, 0, 300);
     slave1.set_channel(&ch1);
 
-    TimeSlave slave2("slave2", 20, 25, 0);
+    TimeSlave slave2("slave2", 20, 25, 0, 400);
     slave2.set_channel(&ch2);
 
     thread master_thread{master};

@@ -7,10 +7,11 @@ private:
     std::string name_;
     int hours_, minutes_, seconds_;
     std::chrono::time_point<std::chrono::system_clock> editedTime;
+    int deviation;
 public:
     Clock(std::string name_):name_(name_){};
-    Clock(std::string name_, int hours_, int minutes_, int seconds_)
-    : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_){};
+    Clock(std::string name_, int hours_, int minutes_, int seconds_, int deviation)
+    : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_), deviation(deviation){};
     void operator()();
     void set_time(int hours_, int minutes_, int seconds);
     std::tuple<int, int, int> get_time();

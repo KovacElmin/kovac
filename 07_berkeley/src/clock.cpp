@@ -13,7 +13,7 @@ void Clock::operator()(){
     ostringstream outputStream;
     while (true)
     {
-        this_thread::sleep_for(std::chrono::milliseconds(1000));
+        this_thread::sleep_for(std::chrono::milliseconds(1000 + deviation));
 
         std::chrono::system_clock systemClock;
         std::chrono::time_point<chrono::system_clock> currTime = systemClock.now();

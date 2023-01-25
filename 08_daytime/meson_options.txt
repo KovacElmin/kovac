@@ -1,0 +1,5 @@
+
+option('clipp_include_dir', type : 'string', value : '/home/elmin', description : 'the include dir of clipp')
+
+option('spdlog_include_dir', type : 'string', value : '/home/elmin/spdlog', description : 'the include dir of spdlog')
+

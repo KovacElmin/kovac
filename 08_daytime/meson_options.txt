@@ -3,3 +3,4 @@ option('clipp_include_dir', type : 'string', value : '/home/elmin', description 
 
 option('spdlog_include_dir', type : 'string', value : '/home/elmin/spdlog', description : 'the include dir of spdlog')
 
+option('asio_include_dir', type : 'string', value : '/home/elmin/asio/include', description : 'the include dir of asio')

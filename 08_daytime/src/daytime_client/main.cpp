@@ -1,9 +1,12 @@
 #include <iostream>
 #include "spdlog/spdlog.h"
+#include <asio.hpp>
 
 using namespace std;
+using namespace asio::ip;
 
 int main(){
+    /*
     spdlog::info("Welcome to spdlog!");
     spdlog::error("Some error message with arg: {}", 1);
     
@@ -23,4 +26,12 @@ int main(){
     // define SPDLOG_ACTIVE_LEVEL to desired level
     SPDLOG_TRACE("Some trace message with param {}", 42);
     SPDLOG_DEBUG("Some debug message");
+    */
+    tcp::iostream strm{"localhost", "1113"};
+    if (strm) { // connected
+        string data;
+        getline(strm, data);
+        cout << data << endl;
+        strm.close(); 
+    }
 }

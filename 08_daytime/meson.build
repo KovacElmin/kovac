@@ -5,8 +5,11 @@ project('08_daytime', 'cpp',
 
 thread_dep = dependency('threads')
 
-inc_dir = include_directories(['include', [get_option('clipp_include_dir')],
-                              [get_option('spdlog_include_dir')]])
+inc_dir = include_directories(['include', 
+			      [get_option('clipp_include_dir')],
+                              [get_option('spdlog_include_dir')],
+                              [get_option('asio_include_dir')]
+                              ])
 
 src_client = ['src/daytime_client/main.cpp']
 src_server = ['src/daytime_server/main.cpp']

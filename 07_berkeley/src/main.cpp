@@ -21,6 +21,11 @@ public:
     Pipe<long>& get_pipe2(){
         return pipe2;
     }
+
+    void set_latency(long latency){
+        pipe1.set_latency(latency);
+        pipe2.set_latency(latency);
+    }
 };
 
 class TimeSlave{
@@ -72,6 +77,7 @@ public:
         while(true){
             long time = clock.to_time();
 
+
             channel1->get_pipe1() << time;
             channel2->get_pipe1() << time;
             long s1_time;
@@ -105,6 +111,9 @@ public:
 int main(){
     Channel ch1;
     Channel ch2;
+
+    ch1.set_latency(100);
+    ch2.set_latency(200);
 
     TimeMaster master("master", 21, 0, 0);
     master.set_channel1(&ch1);

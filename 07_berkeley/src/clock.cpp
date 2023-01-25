@@ -14,10 +14,10 @@ void Clock::operator()(){
     while (true)
     {
         this_thread::sleep_for(std::chrono::milliseconds(1000));
-        
-        chrono::system_clock systemClock;
-        chrono::time_point<chrono::system_clock> currTime = systemClock.now();
-        chrono::time_point<chrono::system_clock> editedTime = TIME_UTILS_H::set_time(currTime, hours_, minutes_, seconds_);
+
+        std::chrono::system_clock systemClock;
+        std::chrono::time_point<chrono::system_clock> currTime = systemClock.now();
+        editedTime = TIME_UTILS_H::set_time(currTime, hours_, minutes_, seconds_);
 
         editedTime += chrono::seconds(passedSeconds);
         
@@ -44,3 +44,11 @@ tuple<int,int,int> Clock::get_time(){
     return time;
 }
 
+long Clock::to_time(){
+    long to_time = chrono::system_clock::to_time_t(editedTime);
+    return to_time;
+}
+
+void Clock::from_time(long time){
+    editedTime = chrono::system_clock::from_time_t(time);
+}

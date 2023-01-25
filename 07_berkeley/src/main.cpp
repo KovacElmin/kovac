@@ -33,16 +33,15 @@ public:
     : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_){}
     
     void operator()(){
-        /*
-        thread clock(Clock(name_, hours_, minutes_, seconds_));
-        clock.join();
-        */
-        long value{};
+        Clock clock(name_, hours_, minutes_, seconds_);
+        thread clock_thread(clock);
+        long time = clock.to_time();
+        long value;
         ostringstream outputStream;
         while(channel->get_pipe1() >> value){
-            outputStream << name_ << " " << value;
-            cout << outputStream.str() << "\n" << flush;
-            outputStream.str("");
+            channel->get_pipe2() << time;
+            channel->get_pipe1() >> value;
+            clock.from_time(time + value);
         }
 
     }
@@ -67,22 +66,30 @@ public:
     : name_(name_), hours_(hours_), minutes_(minutes_), seconds_(seconds_){}
     
     void operator()(){
-        /*
-        thread clock(Clock(name_, hours_, minutes_, seconds_));
-        clock.join();
-        */
-        channel1->get_pipe1() << 1;
-        channel1->get_pipe1() << 2;
-        channel1->get_pipe1() << 3;
+        Clock clock(name_, hours_, minutes_, seconds_);
+        thread clock_thread(clock);
 
-        channel2->get_pipe1() << 1;
-        channel2->get_pipe1() << 2;
-        channel2->get_pipe1() << 3;
+        while(true){
+            long time = clock.to_time();
 
-        this_thread::sleep_for(chrono::milliseconds(500));
+            channel1->get_pipe1() << time;
+            channel2->get_pipe1() << time;
+            long s1_time;
+            channel1->get_pipe2() >> s1_time;
+            long s2_time;
+            channel2->get_pipe2() >> s2_time;
+            long s1_difference = s1_time - time;
+            long s2_difference = s2_time - time;
+            long average_difference = (s1_difference + s2_difference) / 2;
+            channel1->get_pipe1() << average_difference - s1_difference;
+            channel2->get_pipe1() << average_difference - s2_difference;
 
-        channel1->get_pipe1().close();
-        channel2->get_pipe2().close();
+            clock.from_time(time + average_difference);
+
+            this_thread::sleep_for(chrono::milliseconds(10000));
+        }
+
+        clock_thread.join();
     }
 
     void set_channel1(Channel* ch1){

@@ -41,10 +41,10 @@ public:
     
     void operator()(){
         Clock clock(name_, hours_, minutes_, seconds_, deviation);
+        //Starten des Clock-Threads
         thread clock_thread(clock);
         long time = clock.to_time();
         long value;
-        ostringstream outputStream;
         while(channel->get_pipe1() >> value){
             channel->get_pipe2() << time;
             channel->get_pipe1() >> value;
@@ -75,11 +75,12 @@ public:
     
     void operator()(){
         Clock clock(name_, hours_, minutes_, seconds_, deviation);
+        //starten des Clock-Threads
         thread clock_thread(clock);
 
         while(true){
+            //Implementierung des berkeley Algorithmuses
             long time = clock.to_time();
-
 
             channel1->get_pipe1() << time;
             channel2->get_pipe1() << time;
@@ -112,6 +113,7 @@ public:
 
 
 int main(int argc, char* argv[]){
+    //Eingabe der Latenzen und Abweichungen 
     CLI::App app("Simulate the berkeley-algo");
 
     bool monotone;

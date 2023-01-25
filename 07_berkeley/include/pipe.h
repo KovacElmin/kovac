@@ -14,6 +14,7 @@ class Pipe {
     bool closed{false};
     long latency;
   public:
+    //Wert einfuegen in die Pipe
     Pipe& operator<<(T value) {
         if(!closed){
             if(latency != 0){
@@ -26,6 +27,7 @@ class Pipe {
         return *this;
     }
     
+    //Wert auslesen aus der Pipe
     Pipe& operator>>(T& value) {
         if(!closed){
             std::unique_lock<std::mutex> guard{mtx};

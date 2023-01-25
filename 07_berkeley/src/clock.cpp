@@ -13,6 +13,7 @@ void Clock::operator()(){
     ostringstream outputStream;
     while (true)
     {
+        //Sekunde mit Abweichung
         this_thread::sleep_for(std::chrono::milliseconds(1000 + deviation));
 
         std::chrono::system_clock systemClock;
@@ -21,6 +22,7 @@ void Clock::operator()(){
 
         editedTime += chrono::seconds(passedSeconds);
         
+        //outputStream fuer Threadsichere Ausgabe
         outputStream << name_ << ": " << editedTime;
         cout << outputStream.str() + "\n" << flush;
         outputStream.str("");

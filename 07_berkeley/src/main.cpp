@@ -1,5 +1,6 @@
 #include "clock.h"
 #include "pipe.h"
+#include "CLI11.hpp"
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -110,21 +111,43 @@ public:
 };
 
 
-int main(){
+int main(int argc, char* argv[]){
+    CLI::App app("Simulate the berkeley-algo");
+
+    bool monotone;
+    app.add_flag("--monotone", monotone, "set monotone mode");
+
+    unsigned int latency1;
+    app.add_option("--latency1", latency1, "latency to channel 1 (both directions)");
+
+    unsigned int latency2;
+    app.add_option("--latency2", latency2, "latency to channel 2 (both directions)");
+
+    int deviation1;
+    app.add_option("--deviation1", deviation1, "deviation of clock of slave 1");
+
+    int deviation2;
+    app.add_option("--deviation2", deviation2, "deviation of clock of slave 2");
+
+    int deviationm;
+    app.add_option("--deviationm", deviationm, "deviation of clock of master");
+
+    CLI11_PARSE(app, argc, argv);
+    
     Channel ch1;
     Channel ch2;
 
-    ch1.set_latency(100);
-    ch2.set_latency(200);
+    ch1.set_latency(latency1);
+    ch2.set_latency(latency2);
 
-    TimeMaster master("master", 21, 0, 0, 200);
+    TimeMaster master("master", 21, 0, 0, deviationm);
     master.set_channel1(&ch1);
     master.set_channel2(&ch2);
 
-    TimeSlave slave1("slave1", 15, 45, 0, 300);
+    TimeSlave slave1("slave1", 15, 45, 0, deviation1);
     slave1.set_channel(&ch1);
 
-    TimeSlave slave2("slave2", 20, 25, 0, 400);
+    TimeSlave slave2("slave2", 20, 25, 0, deviation2);
     slave2.set_channel(&ch2);
 
     thread master_thread{master};

@@ -31,9 +31,8 @@ int main(int argc, char* argv[]){
     */
     CLI::App app("daytime_client");
 
-    int port;
+    int port = 1113;
     app.add_option("-p, --port", port, "port to connect to");
-
     CLI11_PARSE(app, argc, argv);
 
     stringstream portStream;

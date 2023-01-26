@@ -12,8 +12,7 @@ int main(int argc, char* argv[]) {
     CLI::App app("daytime_server");
 
     short unsigned int port;
-    app.add_option("-p, --port", port, "server port");
-
+    app.add_option("-p, --port", port, "server port")->required();
     CLI11_PARSE(app, argc, argv);
     
     while(true){

@@ -42,10 +42,15 @@ int main(int argc, char* argv[]){
     tcp::iostream strm{"localhost", portStream.str()};
     if (strm) { // connected
         string data;
-        getline(strm, data);
+        try{
+            getline(strm, data);
+        }catch(...){
+            spdlog::error("Could not read data from stream");
+        }
+        
         cout << data << endl;
         strm.close(); 
     }else {
-        cerr << "Could not connect to server!" << endl;
+        spdlog::error("Could not connect to the server");
     }
 }

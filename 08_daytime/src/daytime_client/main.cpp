@@ -1,11 +1,13 @@
-#include <iostream>
 #include "spdlog/spdlog.h"
 #include <asio.hpp>
+#include "CLI11.hpp"
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 using namespace asio::ip;
 
-int main(){
+int main(int argc, char* argv[]){
     /*
     spdlog::info("Welcome to spdlog!");
     spdlog::error("Some error message with arg: {}", 1);
@@ -27,7 +29,17 @@ int main(){
     SPDLOG_TRACE("Some trace message with param {}", 42);
     SPDLOG_DEBUG("Some debug message");
     */
-    tcp::iostream strm{"localhost", "1113"};
+    CLI::App app("daytime_client");
+
+    int port;
+    app.add_option("-p, --port", port, "port to connect to");
+
+    CLI11_PARSE(app, argc, argv);
+
+    stringstream portStream;
+    portStream << port;
+
+    tcp::iostream strm{"localhost", portStream.str()};
     if (strm) { // connected
         string data;
         getline(strm, data);

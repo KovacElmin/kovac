@@ -1,4 +1,5 @@
 #include "timeutils.h"
+#include "CLI11.hpp"
 #include <iostream> 
 #include <asio.hpp>
 #include <chrono>
@@ -6,10 +7,17 @@
 using namespace std; 
 using namespace asio::ip;
 
-int main() {
+int main(int argc, char* argv[]) {
+    CLI::App app("daytime_server");
+
+    short unsigned int port;
+    app.add_option("-p, --port", port, "server port");
+
+    CLI11_PARSE(app, argc, argv);
+    
     while(true){
         asio::io_context ctx;
-        tcp::endpoint ep{tcp::v4(), 1113};
+        tcp::endpoint ep{tcp::v4(), port};
         tcp::acceptor acceptor{ctx, ep};
         acceptor.listen();
 

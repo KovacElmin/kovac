@@ -31,6 +31,7 @@ int main(int argc, char* argv[]){
     */
     CLI::App app("daytime_client");
 
+    //Port auf den sich der Client verbindet
     int port = 1113;
     app.add_option("-p, --port", port, "port to connect to");
     CLI11_PARSE(app, argc, argv);
@@ -39,14 +40,15 @@ int main(int argc, char* argv[]){
     portStream << port;
 
     tcp::iostream strm{"localhost", portStream.str()};
-    if (strm) { // connected
+    if (strm) {
         string data;
         try{
+            //lesen des Streams
             getline(strm, data);
         }catch(...){
             spdlog::error("Could not read data from stream");
         }
-        
+        //ausgabe der Informationen vom Stream
         cout << data << endl;
         strm.close(); 
     }else {

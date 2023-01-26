@@ -11,6 +11,7 @@ using namespace asio::ip;
 int main(int argc, char* argv[]) {
     CLI::App app("daytime_server");
 
+    //Port auf den gelauscht wird
     short unsigned int port;
     app.add_option("-p, --port", port, "server port")->required();
     CLI11_PARSE(app, argc, argv);
@@ -27,6 +28,7 @@ int main(int argc, char* argv[]) {
             tcp::iostream strm{std::move(sock)};
 
             try{
+                //aktuelle Zeit wird in den Stream geschoben
                 TIME_UTILS_H::operator<<(strm, chrono::system_clock::now());
             }catch(...){
                 spdlog::error("Could not send data");

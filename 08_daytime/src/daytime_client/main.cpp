@@ -33,5 +33,7 @@ int main(){
         getline(strm, data);
         cout << data << endl;
         strm.close(); 
+    }else {
+        cerr << "Could not connect to server!" << endl;
     }
 }
